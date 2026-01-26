@@ -75,8 +75,25 @@ else
 fi
 echo ""
 
-# Paso 5: Crear/Actualizar servicio systemd
-print_info "Paso 5/7: Configurando servicio systemd..."
+# Paso 5: Verificar archivo de configuración
+print_info "Paso 5/7: Verificando archivo de configuración..."
+if [ ! -f "application-prod.properties" ]; then
+    print_error "No se encontró application-prod.properties"
+    print_info "Creando desde template..."
+    if [ -f "application-prod.properties.example" ]; then
+        cp application-prod.properties.example application-prod.properties
+        print_warn "IMPORTANTE: Edita application-prod.properties con tu MongoDB Connection String"
+        exit 1
+    else
+        print_error "Tampoco se encontró application-prod.properties.example"
+        exit 1
+    fi
+fi
+print_info "Archivo de configuración encontrado"
+echo ""
+
+# Paso 6: Crear/Actualizar servicio systemd
+print_info "Paso 6/7: Configurando servicio systemd..."
 
 # Obtener usuario actual
 CURRENT_USER=$(whoami)
@@ -91,7 +108,7 @@ After=network.target
 Type=simple
 User=$CURRENT_USER
 WorkingDirectory=$APP_DIR
-ExecStart=/usr/bin/java -jar $APP_DIR/target/$JAR_NAME
+ExecStart=/usr/bin/java -jar $APP_DIR/target/$JAR_NAME --spring.config.location=$APP_DIR/application-prod.properties
 SuccessExitStatus=143
 Restart=always
 RestartSec=10
