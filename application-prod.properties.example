@@ -1,17 +1,17 @@
-# Configuración de Producción para AWS EC2
+# Configuración de Producción para GCP (Google Cloud Platform)
 # Copiar este archivo como application-prod.properties y editar con tus valores
 
 spring.application.name=BirthdayApp
-server.port=${PORT:8080}
+server.port=8080
 
 # Security Configuration
 spring.security.user.name=admin
-spring.security.user.password=Effeta.Admin2771
+spring.security.user.password=Admin2024!
 
-# MongoDB Configuration - Editar con tu Connection String de MongoDB Atlas
-# Ejemplo: mongodb+srv://usuario:password@cluster.xxxxx.mongodb.net/birthdayapp?retryWrites=true&w=majority
-spring.data.mongodb.uri=${MONGODB_URI:mongodb://localhost:27017/birthdayapp}
-spring.data.mongodb.database=${MONGODB_DATABASE:birthdayapp}
+# MongoDB Atlas Configuration
+# IMPORTANTE: Reemplaza esta línea con tu Connection String de MongoDB Atlas
+spring.data.mongodb.uri=mongodb+srv://birthdayapp_user:TU_PASSWORD@cluster.xxxxx.mongodb.net/birthdayapp?retryWrites=true&w=majority&appName=Effeta
+spring.data.mongodb.database=birthdayapp
 
 # Logging Configuration
 logging.level.root=INFO
