@@ -1,0 +1,24 @@
+# Configuración de Producción para AWS EC2
+# Copiar este archivo como application-prod.properties y editar con tus valores
+
+spring.application.name=BirthdayApp
+server.port=${PORT:8080}
+
+# Security Configuration
+spring.security.user.name=admin
+spring.security.user.password=Effeta.Admin2771
+
+# MongoDB Configuration - Editar con tu Connection String de MongoDB Atlas
+# Ejemplo: mongodb+srv://usuario:password@cluster.xxxxx.mongodb.net/birthdayapp?retryWrites=true&w=majority
+spring.data.mongodb.uri=${MONGODB_URI:mongodb://localhost:27017/birthdayapp}
+spring.data.mongodb.database=${MONGODB_DATABASE:birthdayapp}
+
+# Logging Configuration
+logging.level.root=INFO
+logging.level.com.effeta.BirthdayApp=INFO
+logging.file.name=logs/birthdayapp.log
+logging.file.max-size=10MB
+logging.file.max-history=30
+
+# Production Settings
+spring.devtools.restart.enabled=false

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Invitaciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .agregar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .confirmado {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .pendiente {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .link {
+            color: #667eea;
+            word-break: break-all;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            background: #28a745;
+        }
+
+        .whatsapp-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            background: #25D366;
+            margin-left: 5px;
+        }
+
+        .whatsapp-btn:hover {
+            background: #1fb855;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .fiesta-selector {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .fiesta-selector label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .fiesta-selector select {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .whatsapp-masivo-btn {
+            width: 100%;
+            padding: 20px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-masivo-btn:hover {
+            background: #1fb855;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .envio-masivo {
+            margin-bottom: 30px;
+        }
+
+        .advertencia {
+            text-align: center;
+            color: #856404;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-content button {
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Panel de Administración - Invitaciones</h1>
+            <form action="/logout" method="POST" style="margin: 0;">
+                <button type="submit" class="logout-btn">🚪 Cerrar Sesión</button>
+            </form>
+        </div>
+
+        <div class="fiesta-selector">
+            <label for="fiestaSelect">🎉 Seleccionar Fiesta:</label>
+            <select id="fiestaSelect" onchange="cambiarFiesta()">
+                <!-- Se llena dinámicamente -->
+            </select>
+            <button onclick="mostrarModalNuevaFiesta()">➕ Nueva Fiesta</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="totalInvitados">0</h3>
+                <p>Total de Invitados</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalConfirmados">0</h3>
+                <p>Confirmados</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalPendientes">0</h3>
+                <p>Pendientes</p>
+            </div>
+        </div>
+
+        <div class="envio-masivo">
+            <button class="whatsapp-masivo-btn" onclick="enviarMasivoWhatsApp()">
+                📱 Enviar a TODOS por WhatsApp
+            </button>
+            <p class="advertencia">⚠️ Esto abrirá WhatsApp para cada invitado (uno por uno)</p>
+        </div>
+
+        <div class="agregar">
+            <input type="text" id="nombreInput" placeholder="Nombre del invitado" />
+            <input type="tel" id="telefonoInput" placeholder="Teléfono (ej: 573001234567)" />
+            <button onclick="agregarInvitado()">Agregar Invitado</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>ID</th>
+                    <th>Link de Invitación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInvitados">
+                <tr>
+                    <td colspan="6" style="text-align: center;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalNuevaFiesta" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>🎉 Crear Nueva Fiesta</h2>
+            <input type="text" id="nombreFiesta" placeholder="Nombre de la fiesta">
+            <input type="text" id="fechaFiesta" placeholder="Fecha (ej: 15 de Febrero)">
+            <input type="text" id="horaFiesta" placeholder="Hora (ej: 7:00 PM)">
+            <input type="text" id="lugarFiesta" placeholder="Lugar">
+            <input type="text" id="vestimentaFiesta" placeholder="Código de vestimenta (ej: Casual)">
+            <input type="text" id="anfitrionFiesta" placeholder="Anfitrión">
+            <button onclick="crearFiesta()">Crear</button>
+            <button onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        let fiestaActual = null;
+        let todasLasFiestas = {};
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarFiestas();
+        });
+
+        async function cargarFiestas() {
+            try {
+                const response = await fetch('/api/fiestas');
+                const fiestasArray = await response.json();
+                
+                // Convertir array a objeto para mantener compatibilidad
+                todasLasFiestas = {};
+                fiestasArray.forEach(fiesta => {
+                    todasLasFiestas[fiesta.id] = fiesta;
+                });
+                
+                const select = document.getElementById('fiestaSelect');
+                select.innerHTML = '';
+                
+                fiestasArray.forEach(fiesta => {
+                    const option = document.createElement('option');
+                    option.value = fiesta.id;
+                    option.textContent = fiesta.nombre;
+                    select.appendChild(option);
+                });
+                
+                // Seleccionar la primera fiesta
+                if (fiestasArray.length > 0) {
+                    fiestaActual = fiestasArray[0].id;
+                    cargarInvitadosDeFiesta();
+                }
+            } catch (error) {
+                console.error('Error al cargar fiestas:', error);
+            }
+        }
+
+        function cambiarFiesta() {
+            const select = document.getElementById('fiestaSelect');
+            fiestaActual = select.value;
+            cargarInvitadosDeFiesta();
+        }
+
+        async function cargarInvitadosDeFiesta() {
+            if (!fiestaActual) return;
+            
+            try {
+                const response = await fetch(`/api/invitados/fiesta/${fiestaActual}`);
+                const invitados = await response.json();
+
+                const tbody = document.getElementById('tablaInvitados');
+                tbody.innerHTML = '';
+
+                let total = 0;
+                let confirmados = 0;
+                let pendientes = 0;
+
+                invitados.forEach(invitado => {
+                    total++;
+                    if (invitado.confirmado) {
+                        confirmados++;
+                    } else {
+                        pendientes++;
+                    }
+
+                    const link = `${window.location.origin}/invitacion.html?id=${invitado.id}`;
+                    const mensaje = `¡Hola ${invitado.nombre}! 🎉%0A%0AEstás invitado/a a mi cumpleaños.%0AAquí está tu invitación personalizada:%0A%0A${encodeURIComponent(link)}`;
+                    const whatsappLink = `https://wa.me/${invitado.telefono}?text=${mensaje}`;
+                    
+                    const row = `
+                        <tr>
+                            <td>${invitado.nombre}</td>
+                            <td>${invitado.telefono || 'N/A'}</td>
+                            <td>
+                                <span class="${invitado.confirmado ? 'confirmado' : 'pendiente'}">
+                                    ${invitado.confirmado ? '✅ Confirmado' : '❓ Pendiente'}
+                                </span>
+                            </td>
+                            <td><code>${invitado.id}</code></td>
+                            <td class="link">${link}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="copy-btn" onclick="copiarLink('${link}')">
+                                        📋 Copiar
+                                    </button>
+                                    <button class="whatsapp-btn" onclick="enviarWhatsApp('${whatsappLink}')">
+                                        📱 WhatsApp
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+
+                document.getElementById('totalInvitados').innerText = total;
+                document.getElementById('totalConfirmados').innerText = confirmados;
+                document.getElementById('totalPendientes').innerText = pendientes;
+
+                if (total === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay invitados aún</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error al cargar invitados:', error);
+            }
+        }
+
+        async function agregarInvitado() {
+            const nombre = document.getElementById('nombreInput').value.trim();
+            const telefono = document.getElementById('telefonoInput').value.trim();
+            
+            if (!nombre) {
+                alert('Por favor, ingresa un nombre');
+                return;
+            }
+
+            if (!telefono) {
+                alert('Por favor, ingresa un número de teléfono');
+                return;
+            }
+
+            // Validar formato de teléfono (debe empezar con código de país)
+            if (!telefono.match(/^\d{10,15}$/)) {
+                alert('Por favor, ingresa un número de teléfono válido (10-15 dígitos, sin espacios ni símbolos)');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/invitado', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        nombre, 
+                        telefono,
+                        fiestaId: fiestaActual
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('nombreInput').value = '';
+                    document.getElementById('telefonoInput').value = '';
+                    cargarInvitadosDeFiesta();
+                    alert(`✅ Invitado "${nombre}" agregado correctamente`);
+                } else {
+                    alert('❌ Error al agregar invitado. Verifica los datos.');
+                }
+            } catch (error) {
+                alert('❌ Error al agregar invitado');
+            }
+        }
+
+        async function crearFiesta() {
+            const nombre = document.getElementById('nombreFiesta').value.trim();
+            const fecha = document.getElementById('fechaFiesta').value.trim();
+            const hora = document.getElementById('horaFiesta').value.trim();
+            const lugar = document.getElementById('lugarFiesta').value.trim();
+            const vestimenta = document.getElementById('vestimentaFiesta').value.trim();
+            const anfitrion = document.getElementById('anfitrionFiesta').value.trim();
+            
+            if (!nombre) {
+                alert('El nombre de la fiesta es obligatorio');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/fiesta', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombre,
+                        fecha,
+                        hora,
+                        lugar,
+                        codigoVestimenta: vestimenta,
+                        anfitrion
+                    })
+                });
+                
+                if (response.ok) {
+                    cerrarModal();
+                    cargarFiestas();
+                    alert(`✅ Fiesta "${nombre}" creada correctamente`);
+                }
+            } catch (error) {
+                alert('❌ Error al crear fiesta');
+            }
+        }
+
+        async function enviarMasivoWhatsApp() {
+            const invitados = await obtenerInvitadosFiestaActual();
+            
+            if (invitados.length === 0) {
+                alert('No hay invitados en esta fiesta');
+                return;
+            }
+            
+            const confirmacion = confirm(
+                `¿Enviar invitación a ${invitados.length} invitados por WhatsApp?\n\n` +
+                `Esto abrirá WhatsApp ${invitados.length} veces (una por invitado).\n` +
+                `Presiona OK para continuar.`
+            );
+            
+            if (!confirmacion) return;
+            
+            let enviados = 0;
+            for (const invitado of invitados) {
+                if (!invitado.telefono) {
+                    console.log(`Invitado ${invitado.nombre} no tiene teléfono`);
+                    continue;
+                }
+                
+                const link = `${window.location.origin}/invitacion.html?id=${invitado.id}`;
+                const mensaje = `¡Hola ${invitado.nombre}! 🎉%0A%0AEstás invitado/a a mi cumpleaños.%0AAquí está tu invitación personalizada:%0A%0A${encodeURIComponent(link)}`;
+                const whatsappLink = `https://wa.me/${invitado.telefono}?text=${mensaje}`;
+                
+                // Abrir WhatsApp con un pequeño delay entre cada uno
+                setTimeout(() => {
+                    window.open(whatsappLink, '_blank');
+                }, enviados * 2000); // 2 segundos entre cada envío
+                
+                enviados++;
+            }
+            
+            alert(`✅ Se abrirán ${enviados} ventanas de WhatsApp en los próximos segundos`);
+        }
+
+        async function obtenerInvitadosFiestaActual() {
+            try {
+                const response = await fetch(`/api/invitados/fiesta/${fiestaActual}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return [];
+            }
+        }
+
+        function mostrarModalNuevaFiesta() {
+            document.getElementById('modalNuevaFiesta').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalNuevaFiesta').style.display = 'none';
+            // Limpiar campos
+            document.getElementById('nombreFiesta').value = '';
+            document.getElementById('fechaFiesta').value = '';
+            document.getElementById('horaFiesta').value = '';
+            document.getElementById('lugarFiesta').value = '';
+            document.getElementById('vestimentaFiesta').value = '';
+            document.getElementById('anfitrionFiesta').value = '';
+        }
+
+        function enviarWhatsApp(link) {
+            window.open(link, '_blank');
+        }
+
+        function copiarLink(link) {
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link copiado al portapapeles');
+            });
+        }
+
+        // Permitir agregar con Enter
+        document.getElementById('nombreInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                agregarInvitado();
+            }
+        });
+        
+        document.getElementById('telefonoInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                agregarInvitado();
+            }
+        });
+    </script>
+</body>
+</html>

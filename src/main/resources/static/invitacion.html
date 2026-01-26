@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación de Cumpleaños 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .nombre {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 32px;
+        }
+
+        .detalles {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .detalles p {
+            margin: 10px 0;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .detalles strong {
+            color: #333;
+        }
+
+        .estado {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .estado.confirmado {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado.pendiente {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            color: #667eea;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="emoji">🎂</div>
+        <h1 id="titulo" class="loading">Cargando...</h1>
+        <div id="contenido"></div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        if (!id) {
+            document.getElementById("titulo").innerHTML = '❌ Enlace inválido';
+            document.getElementById("titulo").className = 'error';
+            document.getElementById("contenido").innerHTML = 
+                '<p>No se proporcionó un ID de invitación.</p>';
+        } else {
+            cargarInvitacion();
+        }
+
+        async function cargarInvitacion() {
+            try {
+                const response = await fetch(`/api/invitacion?id=${id}`);
+                
+                if (!response.ok) {
+                    throw new Error('Invitación no encontrada');
+                }
+
+                const data = await response.json();
+                mostrarInvitacion(data);
+            } catch (error) {
+                document.getElementById("titulo").innerHTML = '❌ Invitación no válida';
+                document.getElementById("titulo").className = 'error';
+                document.getElementById("contenido").innerHTML = 
+                    '<p>Esta invitación no existe o ha expirado.</p>';
+            }
+        }
+
+        function mostrarInvitacion(invitado) {
+            document.getElementById("titulo").innerHTML = 
+                `🎉 ¡<span class="nombre">${invitado.nombre}</span>, estás invitado/a a mi cumpleaños! 🎉`;
+            document.getElementById("titulo").className = '';
+
+            const estadoHtml = invitado.confirmado 
+                ? '<div class="estado confirmado">✅ Asistencia confirmada</div>'
+                : '<div class="estado pendiente">❓ Aún no has confirmado tu asistencia</div>';
+
+            const botonHtml = invitado.confirmado 
+                ? '<button disabled>Ya confirmaste tu asistencia ✓</button>'
+                : '<button onclick="confirmarAsistencia()">Confirmar asistencia</button>';
+
+            document.getElementById("contenido").innerHTML = `
+                <div class="detalles">
+                    <p><strong>📅 Fecha:</strong> Sábado 15 de Febrero, 2026</p>
+                    <p><strong>🕐 Hora:</strong> 6:00 PM</p>
+                    <p><strong>📍 Lugar:</strong> Salón de Fiestas "La Alegría"</p>
+                    <p><strong>👗 Código de vestimenta:</strong> Casual elegante</p>
+                </div>
+                ${estadoHtml}
+                ${botonHtml}
+            `;
+        }
+
+        async function confirmarAsistencia() {
+            const boton = event.target;
+            boton.disabled = true;
+            boton.innerText = 'Confirmando...';
+
+            try {
+                const response = await fetch(`/api/confirmar?id=${id}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    boton.innerText = '¡Confirmado! ✓';
+                    document.querySelector('.estado').className = 'estado confirmado';
+                    document.querySelector('.estado').innerHTML = '✅ Asistencia confirmada';
+                    
+                    // Mostrar mensaje de éxito
+                    setTimeout(() => {
+                        alert('¡Gracias por confirmar! 🎉 Te esperamos el 15 de Febrero.');
+                    }, 300);
+                } else {
+                    throw new Error('Error al confirmar');
+                }
+            } catch (error) {
+                alert('Hubo un error al confirmar. Por favor, intenta de nuevo.');
+                boton.disabled = false;
+                boton.innerText = 'Confirmar asistencia';
+            }
+        }
+    </script>
+</body>
+</html>
