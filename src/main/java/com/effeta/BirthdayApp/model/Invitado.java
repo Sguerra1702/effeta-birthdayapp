@@ -1,11 +1,6 @@
 package com.effeta.BirthdayApp.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "invitados")
 public class Invitado {
-    @Id
     private String id;
     private String nombre;
     private String telefono;

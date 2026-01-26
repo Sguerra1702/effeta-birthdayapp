@@ -1,88 +1,65 @@
 package com.effeta.BirthdayApp.service;
 
 import com.effeta.BirthdayApp.model.Invitado;
-import com.effeta.BirthdayApp.repository.InvitadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class InvitacionService {
-    
-    @Autowired
-    private InvitadoRepository invitadoRepository;
-    
-    @Autowired
-    private FiestaService fiestaService;
+    private final Map<String, Invitado> invitados = new HashMap<>();
 
-    public InvitacionService() {
+    @PostConstruct
+    public void inicializarDatosPrueba() {
+        // Datos de prueba
+        crearInvitado(new Invitado("1", "Juan Pérez", "+573001234567", "fiesta1", false));
+        crearInvitado(new Invitado("2", "María García", "+573007654321", "fiesta1", true));
+        crearInvitado(new Invitado("3", "Carlos López", "+573009876543", "fiesta1", false));
     }
 
-    public void inicializarDatosPrueba(String fiestaId) {
-        // Solo crear datos de prueba si no hay invitados
-        if (invitadoRepository.count() == 0) {
-            crearInvitado("Ana García", "573001234567", fiestaId);
-            crearInvitado("Carlos Pérez", "573007654321", fiestaId);
-            crearInvitado("María López", "573009876543", fiestaId);
-            crearInvitado("Juan Rodríguez", "573005554444", fiestaId);
+    public Invitado crearInvitado(Invitado invitado) {
+        if (invitado.getId() == null || invitado.getId().isEmpty()) {
+            invitado.setId(UUID.randomUUID().toString());
         }
-    }
-
-    /**
-     * Crea un nuevo invitado con un ID único
-     */
-    public Invitado crearInvitado(String nombre, String telefono, String fiestaId) {
-        String id = generarIdUnico();
-        Invitado invitado = new Invitado(id, nombre, telefono, fiestaId, false);
-        invitado = invitadoRepository.save(invitado);
-        System.out.println("✅ Invitado creado: " + nombre + " - Teléfono: " + telefono + " - ID: " + id + " - Fiesta: " + fiestaId);
-        System.out.println("   Link: http://localhost:8080/invitacion.html?id=" + id);
+        invitados.put(invitado.getId(), invitado);
         return invitado;
     }
 
-    /**
-     * Obtiene un invitado por su ID
-     */
-    public Invitado obtenerInvitado(String id) {
-        Optional<Invitado> invitado = invitadoRepository.findById(id);
-        return invitado.orElse(null);
+
+    public List<Invitado> obtenerTodosInvitados() {
+        return new ArrayList<>(invitados.values());
     }
 
-    /**
-     * Confirma la asistencia de un invitado
-     */
+    public Invitado obtenerInvitado(String id) {
+        return invitados.get(id);
+    }
+
     public boolean confirmarAsistencia(String id) {
-        Optional<Invitado> optionalInvitado = invitadoRepository.findById(id);
-        if (optionalInvitado.isPresent()) {
-            Invitado invitado = optionalInvitado.get();
+        Invitado invitado = invitados.get(id);
+        if (invitado != null) {
             invitado.setConfirmado(true);
-            invitadoRepository.save(invitado);
             return true;
         }
         return false;
     }
 
-    /**
-     * Obtiene todos los invitados (para administración)
-     */
-    public List<Invitado> obtenerTodosInvitados() {
-        return invitadoRepository.findAll();
+    public void eliminarInvitado(String id) {
+        invitados.remove(id);
     }
 
-    /**
-     * Obtiene invitados por fiesta
-     */
+    public String generarEnlaceInvitacion(String invitadoId) {
+        return "/invitacion.html?id=" + invitadoId;
+    }
+
     public List<Invitado> obtenerInvitadosPorFiesta(String fiestaId) {
-        return invitadoRepository.findByFiestaId(fiestaId);
-    }
-
-    /**
-     * Genera un ID único de 6 caracteres
-     */
-    private String generarIdUnico() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 6);
+        List<Invitado> invitadosFiesta = new ArrayList<>();
+        for (Invitado invitado : invitados.values()) {
+            if (fiestaId.equals(invitado.getFiestaId())) {
+                invitadosFiesta.add(invitado);
+            }
+        }
+        return invitadosFiesta;
     }
 }
+

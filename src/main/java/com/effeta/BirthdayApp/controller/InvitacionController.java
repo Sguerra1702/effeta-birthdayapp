@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +21,6 @@ public class InvitacionController {
 
     @Autowired
     private FiestaService fiestaService;
-
-    @PostConstruct
-    public void init() {
-        // Inicializar datos de prueba con la fiesta por defecto
-        fiestaService.crearFiestaDefault();
-        Fiesta fiestaDefault = fiestaService.obtenerFiestaDefault();
-        if (fiestaDefault != null) {
-            invitacionService.inicializarDatosPrueba(fiestaDefault.getId());
-        }
-    }
 
     /**
      * GET /api/invitacion?id=abc123
@@ -88,7 +77,8 @@ public class InvitacionController {
             fiestaId = fiestaService.obtenerFiestaDefault().getId();
         }
         
-        Invitado invitado = invitacionService.crearInvitado(nombre, telefono, fiestaId);
+        Invitado invitado = new Invitado(null, nombre, telefono, fiestaId, false);
+        invitado = invitacionService.crearInvitado(invitado);
         return ResponseEntity.ok(invitado);
     }
 
@@ -129,7 +119,8 @@ public class InvitacionController {
             return ResponseEntity.badRequest().build();
         }
 
-        Fiesta fiesta = fiestaService.crearFiesta(nombre, fecha, hora, lugar, codigoVestimenta, anfitrion);
+        Fiesta fiesta = new Fiesta(null, nombre, fecha, hora, lugar, codigoVestimenta, anfitrion);
+        fiesta = fiestaService.crearFiesta(fiesta);
         return ResponseEntity.ok(fiesta);
     }
 
