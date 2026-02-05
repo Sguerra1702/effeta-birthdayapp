@@ -12,10 +12,23 @@ public class InvitacionService {
 
     @PostConstruct
     public void inicializarDatosPrueba() {
-        // Datos de prueba
-        crearInvitado(new Invitado("1", "Juan Pérez", "+573001234567", "fiesta1", false));
-        crearInvitado(new Invitado("2", "María García", "+573007654321", "fiesta1", true));
-        crearInvitado(new Invitado("3", "Carlos López", "+573009876543", "fiesta1", false));
+        // Lista de invitados para la fiesta sorpresa de Juanma
+        crearInvitado(new Invitado("1", "Jaisa Rincon", "+573155088491", "fiesta1", false));
+        crearInvitado(new Invitado("2", "Vale Campanelli", "+573046646595", "fiesta1", false));
+        crearInvitado(new Invitado("3", "Nayito", "+573183174268", "fiesta1", false));
+        crearInvitado(new Invitado("4", "Juan Villada", "+573108013248", "fiesta1", false));
+        crearInvitado(new Invitado("5", "Karol", "+573177022109", "fiesta1", false));
+        crearInvitado(new Invitado("6", "Gallito", "+573152155523", "fiesta1", false));
+        crearInvitado(new Invitado("7", "Jose Lineros", "+573203574957", "fiesta1", false));
+        crearInvitado(new Invitado("8", "Camila Rodriguez", "+573022991078", "fiesta1", false));
+        crearInvitado(new Invitado("9", "Mapis Peñuela", "+573213880189", "fiesta1", false));
+        crearInvitado(new Invitado("10", "Brayan Jimenez", "+573144560694", "fiesta1", false));
+        crearInvitado(new Invitado("11", "Julian Parra", "+573127701620", "fiesta1", false));
+        crearInvitado(new Invitado("12", "Samu medina", "+5732125278525", "fiesta1", false));
+        crearInvitado(new Invitado("13", "Nelson Monroy", "+573107220130", "fiesta1", false));
+        crearInvitado(new Invitado("14", "Richard Rodriguez", "+573177970213", "fiesta1", false));
+        crearInvitado(new Invitado("15", "Vanesa Rincon", "+573193927132", "fiesta1", false));
+        crearInvitado(new Invitado("16", "Cristian Rodriguez", "+573192713167", "fiesta1", false));
     }
 
     public Invitado crearInvitado(Invitado invitado) {
@@ -60,6 +73,14 @@ public class InvitacionService {
             }
         }
         return invitadosFiesta;
+    }
+
+    public String generarNombreArchivoInvitacion(String nombreInvitado) {
+        // Convertir a minúsculas y reemplazar ñ por n
+        String nombreArchivo = nombreInvitado.toLowerCase()
+                .replace("ñ", "n")
+                .replace(" ", "_");
+        return "Invitacion_" + nombreArchivo + ".jpeg";
     }
 }
 

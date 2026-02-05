@@ -162,6 +162,16 @@
             cursor: not-allowed;
         }
 
+        .btn-descarga {
+            background: #1e2f6b;
+            color: #ffe7b8;
+            margin-top: 20px;
+        }
+
+        .btn-descarga:hover {
+            background: #2d4494;
+        }
+
         .error {
             color: #ffe7b8;
             font-size: 24px;
@@ -241,8 +251,13 @@
                     <p>🍾 <strong>Cover:</strong> traer el trago de tu preferencia<br><span style="font-size:16px">(hay una sorpresa en la noche)</span></p>
                 </div>
                 ${estadoHtml}
+                <button class="btn-descarga" onclick="descargarInvitacion()">📥 Descargar mi invitación</button>
                 ${botonHtml}
             `;
+        }
+
+        function descargarInvitacion() {
+            window.location.href = `/api/invitacion/descargar?id=${id}`;
         }
 
         async function confirmarAsistencia() {

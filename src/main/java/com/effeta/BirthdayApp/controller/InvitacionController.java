@@ -5,6 +5,10 @@ import com.effeta.BirthdayApp.model.Invitado;
 import com.effeta.BirthdayApp.service.FiestaService;
 import com.effeta.BirthdayApp.service.InvitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +56,40 @@ public class InvitacionController {
         }
         
         return ResponseEntity.ok(Map.of("ok", true, "mensaje", "¡Asistencia confirmada! 🎉"));
+    }
+
+    /**
+     * GET /api/invitacion/descargar?id=abc123
+     * Descarga la invitación personalizada del invitado
+     */
+    @GetMapping("/invitacion/descargar")
+    public ResponseEntity<Resource> descargarInvitacion(@RequestParam String id) {
+        try {
+            Invitado invitado = invitacionService.obtenerInvitado(id);
+            
+            if (invitado == null) {
+                return ResponseEntity.status(404).build();
+            }
+            
+            // Generar el nombre del archivo según el nombre del invitado
+            String nombreArchivo = invitacionService.generarNombreArchivoInvitacion(invitado.getNombre());
+            
+            // Cargar el archivo desde static/invitaciones/
+            Resource resource = new ClassPathResource("static/invitaciones/" + nombreArchivo);
+            
+            if (!resource.exists()) {
+                return ResponseEntity.status(404).build();
+            }
+            
+            // Configurar la respuesta para descarga
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + nombreArchivo + "\"")
+                    .body(resource);
+                    
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
