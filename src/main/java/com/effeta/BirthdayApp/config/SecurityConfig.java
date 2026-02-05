@@ -21,11 +21,13 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 // Rutas públicas (invitaciones)
-                .requestMatchers("/invitacion.html", "/api/invitacion", "/api/confirmar").permitAll()
+                .requestMatchers("/invitacion.html", "/api/invitacion", "/api/confirmar", "/api/invitacion/descargar").permitAll()
                 // Página de login debe ser pública
                 .requestMatchers("/login.html", "/login").permitAll()
-                // Archivos estáticos públicos
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                // Archivos estáticos públicos (imágenes, CSS, JS)
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/invitaciones/**").permitAll()
+                // Imágenes en la raíz (como juanma.png)
+                .requestMatchers("/*.png", "/*.jpg", "/*.jpeg", "/*.gif").permitAll()
                 // Rutas de administración protegidas
                 .requestMatchers("/admin.html", "/api/invitado", "/api/invitados").authenticated()
                 // Cualquier otra ruta requiere autenticación
