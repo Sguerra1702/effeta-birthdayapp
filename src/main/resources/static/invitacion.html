@@ -115,6 +115,17 @@
             color: #ffe7b8;
         }
 
+        .enlace-mapa {
+            color: #ffe7b8;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .enlace-mapa:hover {
+            color: #ffffff;
+        }
+
         .estado {
             padding: 15px;
             border-radius: 40px;
@@ -247,7 +258,7 @@
                 <div class="detalles">
                     <p>📅 <strong>Sábado 14 de Febrero 2026</strong></p>
                     <p>🕗 <strong>8:30 PM</strong></p>
-                    <p>📍 <strong>Calle 104 #21-50 apto 302</strong><br><span style="font-size:16px">Edificio Milenio</span></p>
+                    <p>📍 <strong><a href="https://www.google.com/maps/search/?api=1&query=Calle+104+21-50+apto+302+Edificio+Milenio+Bogota+Colombia" target="_blank" class="enlace-mapa">Calle 104 #21-50 apto 302</a></strong><br><span style="font-size:16px">Edificio Milenio</span></p>
                     <p>🍾 <strong>Cover:</strong> traer el trago de tu preferencia<br><span style="font-size:16px">(hay una sorpresa en la noche)</span></p>
                 </div>
                 ${estadoHtml}
