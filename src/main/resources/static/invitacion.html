@@ -237,7 +237,7 @@
         function mostrarInvitacion(invitado) {
             document.getElementById("titulo").innerHTML = 
                 `<h1 class="titulo-fiesta">Fiesta<br><span class="sorpresa">Sorpresa</span></h1>
-                <img src="juanma.png" alt="Foto de Juanma" class="foto">
+                <img src="juanma.png" alt="Foto de Juanma" class="foto" onerror="this.style.display='none'">
                 <p style="color:#fff; font-size:22px;">
                     ¡<span class="nombre">${invitado.nombre}</span>, estás invitado/a!
                 </p>`;
@@ -258,7 +258,7 @@
                 <div class="detalles">
                     <p>📅 <strong>Sábado 14 de Febrero 2026</strong></p>
                     <p>🕗 <strong>8:30 PM</strong></p>
-                    <p>📍 <strong><a href="https://www.google.com/maps/search/?api=1&query=Calle+104+21-50+apto+302+Edificio+Milenio+Bogota+Colombia" target="_blank" class="enlace-mapa">Calle 104 #21-50 apto 302</a></strong><br><span style="font-size:16px">Edificio Milenio</span></p>
+                    <p>📍 <strong><a href="https://www.google.com/maps/search/?api=1&query=Calle+104+21-50+Bogota+Colombia" target="_blank" class="enlace-mapa">Calle 104 #21-50 apto 302</a></strong><br><span style="font-size:16px">Edificio Milenio</span></p>
                     <p>🍾 <strong>Cover:</strong> traer el trago de tu preferencia<br><span style="font-size:16px">(hay una sorpresa en la noche)</span></p>
                 </div>
                 ${estadoHtml}
