@@ -410,8 +410,8 @@
                     }
 
                     const link = `${window.location.origin}/invitacion.html?id=${invitado.id}`;
-                    const mensaje = `¡Hola ${invitado.nombre}! 🎉%0A%0AEstás invitado/a a mi cumpleaños.%0AAquí está tu invitación personalizada:%0A%0A${encodeURIComponent(link)}`;
-                    const whatsappLink = `https://wa.me/${invitado.telefono}?text=${mensaje}`;
+                    const mensaje = `Hola, ${invitado.nombre}! Juliana Blanco te ha invitado a la fiesta sorpresa de cumpleaños de Juanma! 🎉 Encuentra los detalles y tu invitación entrando en este enlace: ${link}`;
+                    const whatsappLink = `https://wa.me/${invitado.telefono}?text=${encodeURIComponent(mensaje)}`;
                     
                     const row = `
                         <tr>
@@ -558,8 +558,8 @@
                 }
                 
                 const link = `${window.location.origin}/invitacion.html?id=${invitado.id}`;
-                const mensaje = `¡Hola ${invitado.nombre}! 🎉%0A%0AEstás invitado/a a mi cumpleaños.%0AAquí está tu invitación personalizada:%0A%0A${encodeURIComponent(link)}`;
-                const whatsappLink = `https://wa.me/${invitado.telefono}?text=${mensaje}`;
+                const mensaje = `Hola, ${invitado.nombre}! Juliana Blanco te ha invitado a la fiesta sorpresa de cumpleaños de Juanma! 🎉 Encuentra los detalles y tu invitación entrando en este enlace: ${link}`;
+                const whatsappLink = `https://wa.me/${invitado.telefono}?text=${encodeURIComponent(mensaje)}`;
                 
                 // Abrir WhatsApp con un pequeño delay entre cada uno
                 setTimeout(() => {

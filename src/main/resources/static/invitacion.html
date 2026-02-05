@@ -239,7 +239,7 @@
                 `<h1 class="titulo-fiesta">Fiesta<br><span class="sorpresa">Sorpresa</span></h1>
                 <img src="/images/juanma.png" alt="Foto de Juanma" class="foto" onerror="this.style.display='none'">
                 <p style="color:#fff; font-size:22px;">
-                    ¡<span class="nombre">${invitado.nombre}</span>, estás invitado/a!
+                    <span class="nombre">${invitado.nombre}</span>, estás invitado a la fiesta sorpresa de cumpleaños de <strong style="color:#ffe7b8">Juanma</strong>!
                 </p>`;
             document.getElementById("titulo").className = '';
 
@@ -252,9 +252,6 @@
                 : '<button onclick="confirmarAsistencia()">Confirmar asistencia</button>';
 
             document.getElementById("contenido").innerHTML = `
-                <p style="color:#fff; font-size:20px; margin: 20px 0;">
-                    Te invito a la fiesta sorpresa de <strong style="color:#ffe7b8">Juanma</strong>
-                </p>
                 <div class="detalles">
                     <p>📅 <strong>Sábado 14 de Febrero 2026</strong></p>
                     <p>🕗 <strong>8:30 PM</strong></p>
