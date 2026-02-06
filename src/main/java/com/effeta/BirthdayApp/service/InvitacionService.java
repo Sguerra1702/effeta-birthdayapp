@@ -80,9 +80,14 @@ public class InvitacionService {
     }
 
     public String generarNombreArchivoInvitacion(String nombreInvitado) {
-        // Convertir a minúsculas y reemplazar ñ por n
+        // Convertir a minúsculas, reemplazar ñ por n y remover acentos
         String nombreArchivo = nombreInvitado.toLowerCase()
                 .replace("ñ", "n")
+                .replace("á", "a")
+                .replace("é", "e")
+                .replace("í", "i")
+                .replace("ó", "o")
+                .replace("ú", "u")
                 .replace(" ", "_");
         return "Invitacion_" + nombreArchivo + ".jpeg";
     }
